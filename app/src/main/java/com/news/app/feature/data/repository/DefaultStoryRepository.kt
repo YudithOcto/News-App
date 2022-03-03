@@ -3,8 +3,9 @@ package com.news.app.feature.data.repository
 import com.news.app.feature.data.datasource.remote.NewsApi
 import com.news.app.feature.data.datasource.remote.StoryItemDto
 import com.news.app.feature.domain.repository.StoryRepository
+import javax.inject.Inject
 
-class DefaultStoryRepository(
+class DefaultStoryRepository @Inject constructor(
     private val api: NewsApi
 ): StoryRepository {
 

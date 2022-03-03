@@ -1,16 +1,14 @@
 package com.news.app.feature.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.google.gson.GsonBuilder
 import com.news.app.feature.data.datasource.remote.NewsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -27,18 +25,13 @@ object NetworkModule {
             .build()
     }
 
-    @ExperimentalSerializationApi
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        val contentType = MediaType.get("application/json")
-        val json = Json {
-            ignoreUnknownKeys = true
-        }
         return Retrofit.Builder()
             .baseUrl("https://hacker-news.firebaseio.com/v0/")
             .client(okHttpClient)
-            .addConverterFactory(json.asConverterFactory(contentType))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
     }
 
